@@ -2,3 +2,9 @@
 @plugin "daisyui" {
   themes: retro --default;
 }
+
+@layer base {
+  body {
+    font-family: "Hachi Maru Pop", "cursive";
+  }
+}
