@@ -7,16 +7,31 @@ const InputPage: React.FC = () => {
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState("あなたにはまだまだ伸び代があります 🌱");
   const [isLoading, setIsLoading] = useState(false);
+  const [input, setInput] = useState("");
 
   const handleConvert = async () => {
+    if (!input.trim()) return; // 入力ないときは何もしない
+
     setIsLoading(true);
     setShowResult(false);
-    // 本当はここでAPIを呼ぶ
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // 2秒待機
-    setResult("あなたにはまだまだ伸び代があります 🌱");
-    setIsLoading(false);
+
+    const res = await fetch("/api/open-ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ input }),
+    });
+
+    const data = await res.json();
+    const content =
+      data.choices?.[0]?.message?.content || "うまく変換できませんでした。";
+
+    setResult(content);
     setShowResult(true);
+    setIsLoading(false);
   };
+
   return (
     <div className="h-screen flex items-center justify-center ">
       <div className="flex flex-col items-center justify-center gap-4 bg-white w-150 py-8 shadow-md p-4 rounded-lg">
@@ -25,6 +40,8 @@ const InputPage: React.FC = () => {
         </h1>
         <textarea
           placeholder="今日はなんか上手くいかない..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
           className="textarea textarea-md w-100 h-50 bg-white my-10 rounded-xl"
           style={{
             backgroundColor: "#fffdf9",
