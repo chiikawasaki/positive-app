@@ -34,7 +34,7 @@ const InputPage: React.FC = () => {
 
   return (
     <div className="h-screen flex items-center justify-center ">
-      <div className="flex flex-col items-center justify-center gap-4 bg-white w-150 py-8 shadow-md p-4 rounded-lg">
+      <div className="flex flex-col items-center justify-center gap-4 bg-white md:w-150 w-[90vw] py-8 shadow-md p-4 rounded-lg">
         <h1 className="my-5 text-lg font-bold">
           辛かったことをここに書いてみよう
         </h1>
@@ -42,7 +42,7 @@ const InputPage: React.FC = () => {
           placeholder="今日はなんか上手くいかない..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="textarea textarea-md w-100 h-50 bg-white my-10 rounded-xl"
+          className="textarea textarea-md md:w-100 w-[80vw] h-50 bg-white my-10 rounded-xl"
           style={{
             backgroundColor: "#fffdf9",
             boxShadow: "inset 0 0 5px rgba(0,0,0,0.05)",
