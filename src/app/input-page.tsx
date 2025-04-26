@@ -6,10 +6,15 @@ import { motion, AnimatePresence } from "framer-motion";
 const InputPage: React.FC = () => {
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState("あなたにはまだまだ伸び代があります 🌱");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleConvert = () => {
+  const handleConvert = async () => {
+    setIsLoading(true);
+    setShowResult(false);
     // 本当はここでAPIを呼ぶ
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // 2秒待機
     setResult("あなたにはまだまだ伸び代があります 🌱");
+    setIsLoading(false);
     setShowResult(true);
   };
   return (
@@ -27,17 +32,26 @@ const InputPage: React.FC = () => {
           }}
         ></textarea>
         <button
-          className="btn btn-secondary shadow-md mb-10 hover:scale-110 transition-transform active:scale-90 font-normal"
+          className="btn btn-secondary shadow-md mb-10 hover:scale-110 transition-transform active:scale-90 font-normal w-60"
           onClick={handleConvert}
         >
-          🦋 ポジティブ変換する
+          {isLoading ? (
+            <span className="loading loading-dots loading-xs"></span>
+          ) : (
+            "🦋 ポジティブ変換する"
+          )}
         </button>
         <AnimatePresence>
           {showResult && (
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              transition={{
+                duration: 0.5,
+                type: "spring",
+                stiffness: 300,
+                damping: 15,
+              }}
               className="bg-green-50 border-l-4 border-green-400 p-4 rounded text-sm shadow"
             >
               💡 {result}
